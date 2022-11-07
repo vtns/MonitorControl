@@ -324,6 +324,14 @@ class OtherDisplay: Display {
       slider.setValue(osdValue, displayID: self.identifier)
       self.brightnessSyncSourceValue = osdValue
     }
+    let controlContrastAsWell = NSEvent.modifierFlags.contains(.shift)
+    if (controlContrastAsWell) {
+      _ = self.writeDDCValues(command: .contrast, value: self.convValueToDDC(for: .contrast, from: osdValue))
+      self.savePref(osdValue, for: .contrast)
+      if let slider = self.sliderHandler[.contrast] {
+        slider.setValue(osdValue, displayID: self.identifier)
+      }
+    }
   }
 
   override func setBrightness(_ to: Float = -1, slow: Bool = false) -> Bool {
